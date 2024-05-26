@@ -19534,6 +19534,12 @@ ${errorInfo.componentStack}`);
     throw new ExtensionHasNoMethodError("applyCartLinesChange", api.extension.target);
   }
 
+  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/settings.mjs
+  function useSettings() {
+    const settings = useSubscription(useApi().settings);
+    return settings;
+  }
+
   // extensions/costumer-checkout/src/Checkout.tsx
   var import_react11 = __toESM(require_react());
   var import_jsx_runtime4 = __toESM(require_jsx_runtime());
@@ -19545,8 +19551,9 @@ ${errorInfo.componentStack}`);
     const applyCartLinesChange = useApplyCartLinesChange();
     const cartLines = useCartLines();
     const api = useApi();
-    console.log(api);
-    const variantId = "gid://shopify/ProductVariant/44982814081273";
+    const { id_product } = useSettings();
+    console.log(id_product);
+    const variantId = `gid://shopify/ProductVariant/${id_product}`;
     const [isChecked, setIsChecked] = (0, import_react11.useState)(false);
     (0, import_react11.useEffect)(() => {
       const priorityShippingLine = cartLines.find((line) => line.merchandise.id === variantId);
@@ -19576,14 +19583,16 @@ ${errorInfo.componentStack}`);
         }
       }
     });
-    return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
-      Checkbox2,
-      {
-        checked: isChecked,
-        onChange: handleCheckboxChange,
-        children: "Add priority shipping"
-      }
-    );
+    if (id_product) {
+      return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+        Checkbox2,
+        {
+          checked: isChecked,
+          onChange: handleCheckboxChange,
+          children: "Add priority shipping"
+        }
+      );
+    }
   }
 })();
 //# sourceMappingURL=costumer-checkout.js.map

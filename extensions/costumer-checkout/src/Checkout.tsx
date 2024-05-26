@@ -3,7 +3,8 @@ import {
   Checkbox,
   useApplyCartLinesChange,
   useCartLines,
-  useApi
+  useApi,
+  useSettings
 } from '@shopify/ui-extensions-react/checkout';
 import { useState, useEffect } from 'react';
 
@@ -16,9 +17,10 @@ function Extension() {
   const applyCartLinesChange = useApplyCartLinesChange();
   const cartLines = useCartLines();
   const api = useApi();
-  console.log(api);
+  const { id_product } = useSettings();
+  console.log(id_product);
 
-  const variantId = "gid://shopify/ProductVariant/44982814081273";
+  const variantId = `gid://shopify/ProductVariant/${id_product}`;
 
   const [isChecked, setIsChecked] = useState(false);
 
@@ -53,7 +55,7 @@ function Extension() {
       }
     }
   };
-
+if (id_product) {
   return (
     <Checkbox
       checked={isChecked}
@@ -62,4 +64,5 @@ function Extension() {
       Add priority shipping
     </Checkbox>
   );
+}
 }
